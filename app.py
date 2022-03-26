@@ -24,7 +24,7 @@ alt.data_transformers.disable_max_rows()
 
 st.title("Association between COVID-19 Cases with Vaccinations in the U.S.")
 
-col1, col2, col3 = st.columns([4, 6, 2])
+col1, col2, col3 = st.columns([4.5, 5.5, 2])
 
 d = st.date_input(
      "Filter data up to which date",
@@ -82,8 +82,8 @@ vis1 = (vis1_map1 & vis1_map2).resolve_scale(
     title='COVID case rate vs. vaccine dose per capita by state'
 ).configure_view(
     stroke=None,
-    continuousHeight=240,
-    continuousWidth=280
+    continuousHeight=270,
+    continuousWidth=330
 )
 
 with col1:
@@ -97,8 +97,9 @@ with col2:
     place_holder_vis2 = st.empty()
     place_holder_vis3 = st.empty()
     genre = st.radio(
-     "Classify the vaccination data by: ",
-     ('Vaccine type', 'Age group'))
+        "Classify the vaccination data by: ",
+        ('Vaccine type', 'Age group'))
+    st.caption('Note: Data on vaccination status by age group were incompletely recorded before 2021.5.14 and therefore are not included in analysis.')
 
 title_dict = {'Vaccine type': 'Vaccine type', 'Age group': 'Age group'}
 filter_dict = {'Vaccine type': type, 'Age group': age}
@@ -174,7 +175,7 @@ vis2 = alt.layer(
 ).resolve_scale(
     y='independent'
 ).properties(
-    width=600, height=200
+    width=550, height=200, title='COVID-19 cases and vaccinations by week'
 ).configure_view(
     stroke=None
 )
@@ -190,7 +191,7 @@ df = pd.DataFrame(
 vis3 = alt.Chart(df).mark_bar().encode(
     x='a', y='b', color='c', tooltip=['a', 'b', 'c']
 ).properties(
-    width=600, height=200
+    width=550, height=200
 ).configure_view(
     stroke=None
 )
@@ -205,7 +206,7 @@ vis4 = alt.Chart(source).mark_arc(innerRadius=20).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='reds')),
 ).properties(
-    width=165, height=165
+    width=180, height=180
 ).configure_view(
     stroke=None
 )
@@ -214,7 +215,7 @@ vis5 = alt.Chart(source).mark_arc(innerRadius=20).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='blues')),
 ).properties(
-    width=165, height=165
+    width=180, height=180
 ).configure_view(
     stroke=None
 )
@@ -223,7 +224,7 @@ vis6 = alt.Chart(source).mark_arc(innerRadius=20).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='greens')),
 ).properties(
-    width=165, height=165
+    width=180, height=180
 ).configure_view(
     stroke=None
 )
