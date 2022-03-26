@@ -97,11 +97,13 @@ with col2:
     place_holder_vis2 = st.empty()
     place_holder_vis3 = st.empty()
     genre = st.radio(
-     "Classify the vaccine data by: ",
-     ('Vaccine type', 'Vaccinated age'))
+     "Classify the vaccination data by: ",
+     ('Vaccine type', 'Age group'))
 
-dict = {'Vaccine type': type, 'Vaccinated age': age}
-showby = dict[genre]
+title_dict = {'Vaccine type': 'Vaccine type', 'Age group': 'Age group'}
+filter_dict = {'Vaccine type': type, 'Age group': age}
+title = title_dict[genre]
+showby = filter_dict[genre]
 
 # visualization 2
 
@@ -128,14 +130,14 @@ vis2_base = alt.Chart(df2).transform_filter(
 )      
 
 vis2_line1 = vis2_base.mark_line(size=3).encode(
-    y=alt.Y('sum_case:Q', title='New COVID case (solid)'),
+    y=alt.Y('sum_case:Q', title='COVID cases (solid)'),
     color=alt.value("red")
 )
 
 vis2_line2 = vis2_base.mark_line(size=3).encode(
-    y=alt.Y('sum_vaccine:Q', title='New administered vaccine (dashed)'),
+    y=alt.Y('sum_vaccine:Q', title='Vaccines (dashed)'),
     strokeDash=alt.value([5,5]),
-    color=alt.Color('vaccine_type', scale=alt.Scale(scheme='dark2'), title='Vaccine type'),
+    color=alt.Color('vaccine_type', scale=alt.Scale(scheme='dark2'), title=title),
     opacity=alt.condition(vis2_selection1, alt.value(1), alt.value(0.2))
 ).add_selection(
     vis2_selection1
@@ -156,7 +158,7 @@ vis2_points1 = vis2_base.mark_point(size=80, filled=True).encode(
 
 vis2_points2 = vis2_base.mark_point(size=80, filled=True).encode(
     y=alt.Y('sum_vaccine:Q', axis=None),
-    color=alt.Color('vaccine_type', scale=alt.Scale(scheme='dark2'), title='Vaccine type'),
+    color=alt.Color('vaccine_type', scale=alt.Scale(scheme='dark2'), title=title),
     opacity=alt.condition(vis2_selection2 & vis2_selection1, alt.value(1), alt.value(0)),
     tooltip=['week_date:T', 'vaccine_type:N', 'sum_vaccine:Q']
 )
