@@ -1,9 +1,26 @@
 .stApp {
+    color: white;
     background-color: #65b4f5;
 }
 
 h1 {
     color: white;
+}
+
+p {
+    font-size: 1.1rem;
+}
+
+.css-qrbaxs {
+    font-size: 1.1rem;
+}
+
+.stDateInput label {
+    color: white;
+}
+
+code {
+    color: black;
 }
 
 div[data-testid="column"] {
@@ -13,4 +30,8 @@ div[data-testid="column"] {
     border-radius: 3px;
     padding: 10px;
     box-shadow: 5px 5px 3px black;
+}
+
+div[data-testid="column"] label {
+    color: black;
 }
