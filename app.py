@@ -98,7 +98,7 @@ type = ['All', 'Janssen', 'Moderna', 'Pfizer', 'Unknown']
 
 with col2:
     place_holder_vis2 = st.empty()
-    move = st.slider('The number of weeks to translate the COVID-19 case line: ', 0, 10, 0) # choose the number to filter  
+    move = st.slider('The number of weeks to translate the COVID-19 case line: ', 0, 50, 0) # choose the number to filter  
     genre = st.radio(
         "Classify the vaccination data by: ",
         ('Vaccine type', 'Age group'))
