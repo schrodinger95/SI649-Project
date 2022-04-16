@@ -1,0 +1,4 @@
+altair
+pandas
+streamlit
+vega-datasets==0.9.0
