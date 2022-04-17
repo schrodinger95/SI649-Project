@@ -85,7 +85,7 @@ vis1 = (vis1_map1 & vis1_map2).resolve_scale(
     title='COVID case rate vs. vaccine dose per capita by state'
 ).configure_view(
     stroke=None,
-    continuousHeight=260,
+    continuousHeight=265,
     continuousWidth=330
 )
 
@@ -98,9 +98,9 @@ type = ['All', 'Janssen', 'Moderna', 'Pfizer', 'Unknown']
 
 with col2:
     place_holder_vis2 = st.empty()
-    move = st.slider('The number of weeks to translate the COVID-19 case line: ', 0, 50, 0) # choose the number to filter  
+    move = st.slider('The number of week difference between COVID-19 case data and vaccination data: ', 0, 50, 0) # choose the number to filter  
     genre = st.radio(
-        "Classify the vaccination data by: ",
+        "Show the vaccination data by: ",
         ('Vaccine type', 'Age group'))
 
 title_dict = {'Vaccine type': 'Vaccine type', 'Age group': 'Age group'}
@@ -207,7 +207,7 @@ source1 = pd.DataFrame({"category": ["Infected", "Uninfected"], "rate": [tmp2['t
 source2 = pd.DataFrame({"category": ["Vaccinated", "Unvaccinated"], "rate": [tmp2['Dose1_Complete'].values[0] / tmp2['population'].values[0], 1 - tmp2['Dose1_Complete'].values[0] / tmp2['population'].values[0]], "value": [tmp2['Dose1_Complete'].values[0], tmp2['population'].values[0] - tmp2['Dose1_Complete'].values[0]]})
 source3 = pd.DataFrame({"category": ["Vaccinated", "Unvaccinated"], "rate": [tmp2['Series_Complete'].values[0] / tmp2['population'].values[0], 1 - tmp2['Series_Complete'].values[0] / tmp2['population'].values[0]], "value": [tmp2['Series_Complete'].values[0], tmp2['population'].values[0] - tmp2['Series_Complete'].values[0]]})
 
-vis3 = alt.Chart(source1).mark_arc(innerRadius=20).encode(
+vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=43).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", sort=['Uninfected', 'Infected'], scale=alt.Scale(scheme='reds'), legend=alt.Legend(
         orient='bottom',
@@ -220,9 +220,11 @@ vis3 = alt.Chart(source1).mark_arc(innerRadius=20).encode(
     title='Covid-19 infection proportion'
 ).configure_view(
     stroke=None
+).configure_title(
+    dy= -10
 )
 
-vis4 = alt.Chart(source2).mark_arc(innerRadius=20).encode(
+vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=43).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='blues'), legend=alt.Legend(
         orient='bottom',
@@ -235,9 +237,11 @@ vis4 = alt.Chart(source2).mark_arc(innerRadius=20).encode(
     title='First dose vaccination rate'
 ).configure_view(
     stroke=None
+).configure_title(
+    dy= -10
 )
 
-vis5 = alt.Chart(source3).mark_arc(innerRadius=20).encode(
+vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=43).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='greens'), legend=alt.Legend(
         orient='bottom',
@@ -250,6 +254,8 @@ vis5 = alt.Chart(source3).mark_arc(innerRadius=20).encode(
     title='Complete vaccination rate'
 ).configure_view(
     stroke=None
+).configure_title(
+    dy= -10
 )
 
 with col3:
@@ -266,19 +272,19 @@ df4 = pd.read_csv('data/df4.csv')
 df4['date'] = pd.to_datetime(df4['date'])
 
 with col4:
-    genre2 = st.radio(
-        "Show the data by: ",
-        ('Vaccine type', 'Age group'))
+    criteria=st.radio(
+        "Rank the states by: ",
+        ('Completed series percentage', 'COVID case rate'))
     high_low=st.radio(
         "View the data from: ",
         ('Highest to lowest', 'Lowest to highest'))  # reverse order or not
-    criteria=st.radio(
-        "Rank the states by: ",
-        ('Series completed percentage', 'COVID case rate'))
+    genre2 = st.radio(
+        "Show the series data by: ",
+        ('Vaccine type', 'Age group'))
 
 with col5:
     place_holder_vis6 = st.empty()
-    show_number = st.slider('The number of states you want to see: ', 1, 20, 5) # choose the number to filter    
+    show_number = st.slider('The number of states shown in the graphs: ', 1, 20, 5) # choose the number to filter    
 
 # Determine the rank order
 reverse_order='descending'
@@ -438,7 +444,7 @@ if (genre2 == "Vaccine type" and criteria=="COVID case rate"):
             align="center",
             color='black'
         ))
-elif (genre2 == "Vaccine type" and criteria == "Series completed percentage"):
+elif (genre2 == "Vaccine type" and criteria == "Completed series percentage"):
     place_holder_vis6.altair_chart((vis71 | vaccine_typevis).configure_title(
             fontSize=14,
             baseline='middle',
@@ -456,7 +462,7 @@ elif (genre2 == "Age group" and criteria == "COVID case rate"):
             align="center",
             color='black'
         ))
-elif (genre2 =="Age group" and criteria == "Series completed percentage"):
+elif (genre2 =="Age group" and criteria == "Completed series percentage"):
     place_holder_vis6.altair_chart((vis71 | age_groupvis).configure_title(
             fontSize=14,
             baseline='middle',
