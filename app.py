@@ -85,7 +85,7 @@ vis1 = (vis1_map1 & vis1_map2).resolve_scale(
     title='COVID case rate vs. vaccine dose per capita by state'
 ).configure_view(
     stroke=None,
-    continuousHeight=265,
+    continuousHeight=273,
     continuousWidth=330
 )
 
@@ -207,7 +207,7 @@ source1 = pd.DataFrame({"category": ["Infected", "Uninfected"], "rate": [tmp2['t
 source2 = pd.DataFrame({"category": ["Vaccinated", "Unvaccinated"], "rate": [tmp2['Dose1_Complete'].values[0] / tmp2['population'].values[0], 1 - tmp2['Dose1_Complete'].values[0] / tmp2['population'].values[0]], "value": [tmp2['Dose1_Complete'].values[0], tmp2['population'].values[0] - tmp2['Dose1_Complete'].values[0]]})
 source3 = pd.DataFrame({"category": ["Vaccinated", "Unvaccinated"], "rate": [tmp2['Series_Complete'].values[0] / tmp2['population'].values[0], 1 - tmp2['Series_Complete'].values[0] / tmp2['population'].values[0]], "value": [tmp2['Series_Complete'].values[0], tmp2['population'].values[0] - tmp2['Series_Complete'].values[0]]})
 
-vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=43).encode(
+vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=60).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", sort=['Uninfected', 'Infected'], scale=alt.Scale(scheme='reds'), legend=alt.Legend(
         orient='bottom',
@@ -216,7 +216,7 @@ vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=43).encode(
                 alt.Tooltip('value:Q',format='s',title="Number of people"), 
                 alt.Tooltip('rate:Q',format=".2%",title="Proportion of people")],
 ).properties(
-    width=180, height=180,
+    width=180, height=215,
     title='Covid-19 infection proportion'
 ).configure_view(
     stroke=None
@@ -224,7 +224,7 @@ vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=43).encode(
     dy= -10
 )
 
-vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=43).encode(
+vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=60).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='blues'), legend=alt.Legend(
         orient='bottom',
@@ -233,7 +233,7 @@ vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=43).encode(
                 alt.Tooltip('value:Q',format='s',title="Number of people"), 
                 alt.Tooltip('rate:Q',format=".2%",title="Proportion of people")],
 ).properties(
-    width=180, height=180,
+    width=180, height=215,
     title='First dose vaccination rate'
 ).configure_view(
     stroke=None
@@ -241,7 +241,7 @@ vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=43).encode(
     dy= -10
 )
 
-vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=43).encode(
+vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=60).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='greens'), legend=alt.Legend(
         orient='bottom',
@@ -250,7 +250,7 @@ vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=43).encode(
                 alt.Tooltip('value:Q',format='s',title="Number of people"), 
                 alt.Tooltip('rate:Q',format=".2%",title="Proportion of people")],
 ).properties(
-    width=180, height=180,
+    width=180, height=215,
     title='Complete vaccination rate'
 ).configure_view(
     stroke=None
@@ -284,7 +284,7 @@ with col4:
 
 with col5:
     place_holder_vis6 = st.empty()
-    show_number = st.slider('The number of states shown in the graphs: ', 1, 20, 5) # choose the number to filter    
+    show_number = st.slider('The number of states shown in the graphs: ', 1, 20, 4) # choose the number to filter    
 
 # Determine the rank order
 reverse_order='descending'

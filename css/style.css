@@ -36,3 +36,8 @@ div[data-testid="column"] {
 div[data-testid="column"] label {
     color: black;
 }
+
+canvas.marks {
+    max-width: 100%!important;
+    height: auto!important;
+}
