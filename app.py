@@ -85,12 +85,12 @@ vis1 = (vis1_map1 & vis1_map2).resolve_scale(
     title='COVID case rate vs. vaccine dose per capita by state'
 ).configure_view(
     stroke=None,
-    continuousHeight=273,
+    continuousHeight=263,
     continuousWidth=330
 )
 
 with col1:
-    vis1
+    st.altair_chart(vis1)
 
 
 age = ['All', 'age<12', '12<=age<18', '18<=age<65', 'age>=65']
@@ -190,12 +190,12 @@ vis2 = alt.layer(
 ).resolve_scale(
     y='independent'
 ).properties(
-    width=550, height=350, title='COVID-19 cases and vaccinations by week'
+    width=550, height=310, title='COVID-19 cases and vaccinations by week'
 ).configure_view(
     stroke=None
 )
 
-place_holder_vis2.altair_chart(vis2)
+place_holder_vis2.altair_chart(vis2, use_container_width=True)
 
 # visualization 3, 4, 5
 
@@ -207,51 +207,65 @@ source1 = pd.DataFrame({"category": ["Infected", "Uninfected"], "rate": [tmp2['t
 source2 = pd.DataFrame({"category": ["Vaccinated", "Unvaccinated"], "rate": [tmp2['Dose1_Complete'].values[0] / tmp2['population'].values[0], 1 - tmp2['Dose1_Complete'].values[0] / tmp2['population'].values[0]], "value": [tmp2['Dose1_Complete'].values[0], tmp2['population'].values[0] - tmp2['Dose1_Complete'].values[0]]})
 source3 = pd.DataFrame({"category": ["Vaccinated", "Unvaccinated"], "rate": [tmp2['Series_Complete'].values[0] / tmp2['population'].values[0], 1 - tmp2['Series_Complete'].values[0] / tmp2['population'].values[0]], "value": [tmp2['Series_Complete'].values[0], tmp2['population'].values[0] - tmp2['Series_Complete'].values[0]]})
 
-vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=60).encode(
+vis3_selection = alt.selection(type="single")
+
+vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=56).encode(
     theta=alt.Theta(field="value", type="quantitative"),
-    color=alt.Color(field="category", type="nominal", sort=['Uninfected', 'Infected'], scale=alt.Scale(scheme='reds'), legend=alt.Legend(
-        orient='bottom',
-        direction='horizontal')),
+    color=alt.condition(vis3_selection, 
+                        alt.Color(field="category", type="nominal", sort=['Uninfected', 'Infected'], scale=alt.Scale(scheme='reds'), legend=alt.Legend(
+                        orient='bottom',
+                        direction='horizontal',)), 
+                        alt.value('lightgray')),
     tooltip=[alt.Tooltip('category:N',title="Category"), 
                 alt.Tooltip('value:Q',format='s',title="Number of people"), 
                 alt.Tooltip('rate:Q',format=".2%",title="Proportion of people")],
+).add_selection(
+    vis3_selection
 ).properties(
-    width=180, height=215,
-    title='Covid-19 infection proportion'
+    width=180, height=208,
+    title='Covid-19 infection'
 ).configure_view(
     stroke=None
 ).configure_title(
     dy= -10
 )
 
-vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=60).encode(
+vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=56).encode(
     theta=alt.Theta(field="value", type="quantitative"),
-    color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='blues'), legend=alt.Legend(
-        orient='bottom',
-        direction='horizontal')),
+    color=alt.condition(vis3_selection, 
+                        alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='blues'), legend=alt.Legend(
+                        orient='bottom',
+                        direction='horizontal')),
+                        alt.value('lightgray')),
     tooltip=[alt.Tooltip('category:N',title="Category"), 
                 alt.Tooltip('value:Q',format='s',title="Number of people"), 
                 alt.Tooltip('rate:Q',format=".2%",title="Proportion of people")],
+).add_selection(
+    vis3_selection
 ).properties(
-    width=180, height=215,
-    title='First dose vaccination rate'
+    width=180, height=208,
+    title='First dose vaccination'
 ).configure_view(
     stroke=None
 ).configure_title(
     dy= -10
 )
 
-vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=60).encode(
+vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=56).encode(
     theta=alt.Theta(field="value", type="quantitative"),
-    color=alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='greens'), legend=alt.Legend(
-        orient='bottom',
-        direction='horizontal')),
+    color=alt.condition(vis3_selection, 
+                        alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='greens'), legend=alt.Legend(
+                        orient='bottom',
+                        direction='horizontal')),
+                        alt.value('lightgray')),
     tooltip=[alt.Tooltip('category:N',title="Category"), 
                 alt.Tooltip('value:Q',format='s',title="Number of people"), 
                 alt.Tooltip('rate:Q',format=".2%",title="Proportion of people")],
+).add_selection(
+    vis3_selection
 ).properties(
-    width=180, height=215,
-    title='Complete vaccination rate'
+    width=180, height=208,
+    title='Completed vaccination'
 ).configure_view(
     stroke=None
 ).configure_title(
@@ -259,9 +273,9 @@ vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=60).encode(
 )
 
 with col3:
-    vis3
-    vis4
-    vis5
+    st.altair_chart(vis3)
+    st.altair_chart(vis4)
+    st.altair_chart(vis5)
 
 ##############################   The second row   ##############################
 
