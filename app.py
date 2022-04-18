@@ -85,8 +85,8 @@ vis1 = (vis1_map1 & vis1_map2).resolve_scale(
     title='COVID case rate vs. vaccine dose per capita by state'
 ).configure_view(
     stroke=None,
-    continuousHeight=263,
-    continuousWidth=330
+    continuousHeight=244,
+    continuousWidth=302
 )
 
 with col1:
@@ -209,7 +209,7 @@ source3 = pd.DataFrame({"category": ["Vaccinated", "Unvaccinated"], "rate": [tmp
 
 vis3_selection = alt.selection(type="single")
 
-vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=56).encode(
+vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=36).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.condition(vis3_selection, 
                         alt.Color(field="category", type="nominal", sort=['Uninfected', 'Infected'], scale=alt.Scale(scheme='reds'), legend=alt.Legend(
@@ -222,7 +222,7 @@ vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=56).encode(
 ).add_selection(
     vis3_selection
 ).properties(
-    width=180, height=208,
+    width=144, height=166,
     title='Covid-19 infection'
 ).configure_view(
     stroke=None
@@ -230,7 +230,7 @@ vis3 = alt.Chart(source1).mark_arc(innerRadius=10, outerRadius=56).encode(
     dy= -10
 )
 
-vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=56).encode(
+vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=36).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.condition(vis3_selection, 
                         alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='blues'), legend=alt.Legend(
@@ -243,7 +243,7 @@ vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=56).encode(
 ).add_selection(
     vis3_selection
 ).properties(
-    width=180, height=208,
+    width=144, height=166,
     title='First dose vaccination'
 ).configure_view(
     stroke=None
@@ -251,7 +251,7 @@ vis4 = alt.Chart(source2).mark_arc(innerRadius=10, outerRadius=56).encode(
     dy= -10
 )
 
-vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=56).encode(
+vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=36).encode(
     theta=alt.Theta(field="value", type="quantitative"),
     color=alt.condition(vis3_selection, 
                         alt.Color(field="category", type="nominal", scale=alt.Scale(scheme='greens'), legend=alt.Legend(
@@ -264,7 +264,7 @@ vis5 = alt.Chart(source3).mark_arc(innerRadius=10, outerRadius=56).encode(
 ).add_selection(
     vis3_selection
 ).properties(
-    width=180, height=208,
+    width=144, height=166,
     title='Completed vaccination'
 ).configure_view(
     stroke=None
@@ -425,7 +425,7 @@ vaccine_typevis=visbase7.mark_bar().transform_filter(
     select_bar
 ).properties(
     title="Completed series percentage by vaccine type",
-    width=310
+    width=300
 )
 
 age_groupvis=visbase7.mark_bar().transform_filter(
@@ -445,7 +445,7 @@ age_groupvis=visbase7.mark_bar().transform_filter(
     select_bar
 ).properties(
     title="Completed series percentage by age group",
-    width=310
+    width=300
 )
 
 
